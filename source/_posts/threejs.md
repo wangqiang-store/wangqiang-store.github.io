@@ -10,19 +10,19 @@ tags:
   - threejs
 ---
 
-### vue 加载 3D 模型
+### <center>vue 加载 3D 模型</center>
 
-```bash
+```javascript
 $ npm install --save three
 ```
-
-- _**加载 OBJ 模型**_
 
 - _**注意：vue2 模型文件放在 static 下，vue3 模型文件放在 public 下**_
 
 <!-- more -->
 
-```bash
+#### vue 加载 OBJ 模型
+
+```javascript
 <template>
     <div>
         <div id="container"></div>
@@ -180,13 +180,13 @@ export default {
 </script>
 ```
 
-- _**加载 OBJ 模型**_
+#### vue 加载 GTL 模型
 
-```bash
+```javascript
 <template>
     <div>
         <div id="container"></div>
-      </div>
+    </div>
 </template>
 <script>
 import * as Three from 'three'
@@ -197,10 +197,6 @@ import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 import Stats from 'three/examples/jsm/libs/stats.module';
 export default {
-  data() {
-    return {
-    }
-  },
   setup() {
     let plane
     let camera
@@ -314,63 +310,60 @@ export default {
 </script>
 ```
 
-_**模型交互**_
+#### 模型交互
 
-```bash
+```javascript
 // 用户交互
 let selectObject = (event) => {
-   event.preventDefault();
-   if (event.button != 0) return;
-   const mouse = new Three.Vector3();
-   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-   console.log('mouse: ', mouse);
-   const raycaster = new Three.Raycaster();
-   raycaster.setFromCamera(mouse, camera);
-   const intersected = raycaster.intersectObjects(
-      scene.children,
-      false
-   );
-   console.log(intersected)
-   if (intersected.length) {
-      const found = intersected[0];
-      const faceIndex = found.faceIndex;
-      const geometry = found.object.geometry;
-      found.object.material.color.set(0xff0000);
-      const modelID = found.object.modelID;
-   }
+  event.preventDefault();
+  if (event.button != 0) return;
+  const mouse = new Three.Vector3();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  console.log("mouse: ", mouse);
+  const raycaster = new Three.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+  const intersected = raycaster.intersectObjects(scene.children, false);
+  console.log(intersected);
+  if (intersected.length) {
+    const found = intersected[0];
+    const faceIndex = found.faceIndex;
+    const geometry = found.object.geometry;
+    found.object.material.color.set(0xff0000);
+    const modelID = found.object.modelID;
+  }
 };
 window.onpointerdown = selectObject;
 ```
 
-- _**场景销毁**_
+#### 场景销毁
 
-```bash
+```javascript
 // 销毁
 const removeCube = () => {
-    var allChildren = scene.children;
-      if (allChildren.length > 0) {
-        renderer.setSize(0, 0)
-        allChildren.forEach(item => {
-          scene.remove(item);
-        })
-      }
-     scene.traverse((child) => {
-        if (child.material) {
-          child.material.dispose();
-        }
-        if (child.geometry) {
-          child.geometry.dispose();
-        }
-        child = null;
-    });
-    renderer.forceContextLoss();
-    renderer.dispose();
-    scene.clear();
-    scene = null;
-    camera = null;
-    controls = null;
-    renderer.domElement = null;
-    renderer = null;
-}
+  var allChildren = scene.children;
+  if (allChildren.length > 0) {
+    renderer.setSize(0, 0);
+    allChildren.forEach((item) => {
+      scene.remove(item);
+    });
+  }
+  scene.traverse((child) => {
+    if (child.material) {
+      child.material.dispose();
+    }
+    if (child.geometry) {
+      child.geometry.dispose();
+    }
+    child = null;
+  });
+  renderer.forceContextLoss();
+  renderer.dispose();
+  scene.clear();
+  scene = null;
+  camera = null;
+  controls = null;
+  renderer.domElement = null;
+  renderer = null;
+};
 ```

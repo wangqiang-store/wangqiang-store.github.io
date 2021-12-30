@@ -5,7 +5,6 @@ body {
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-position: 50% 50%;
-   opacity: 0.92;
 }
 
 .post {
@@ -14,4 +13,18 @@ body {
    padding: 25px;
    -webkit-box-shadow: 0 0 5px rgba(202, 203, 203, .5);
    -moz-box-shadow: 0 0 5px rgba(202, 203, 204, .5);
+}
+
+// 大代码块的自定义样式
+.table-container::-webkit-scrollbar {
+    width: 0px;
+} 
+.highlight, pre {
+    margin: 5px 0;
+    color: #61afef;
+    background: #282c34 !important;
+}
+
+pre .variable, pre .attribute, pre .tag, pre .name, pre .regexp, pre .ruby .constant, pre .xml .tag .title, pre .xml .pi, pre .xml .doctype, pre .html .doctype, pre .css .id, pre .css .class, pre .css .pseudo {
+    color: #e06253;
 }
