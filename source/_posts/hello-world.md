@@ -1,5 +1,6 @@
 ---
 title: Wang Qiang blogs
+top_img: /image/sub_two.jpg
 top: true
 ---
 
