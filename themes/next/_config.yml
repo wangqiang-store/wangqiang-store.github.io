@@ -200,10 +200,7 @@ links_settings:
 
 links:
   #Title: http://yoursite.com
-  30 seconds of code: https://www.30secondsofcode.org/css/p/1
-  animate.css: https://animate.style/
-  hover.css: https://ianlunn.github.io/Hover/
-  Glass Morphism: https://glassgenerator.netlify.app/
+  ECMAScript 6: https://es6.ruanyifeng.com/
   vueuse: https://vueuse.org/
 
 # Table of Contents in the Sidebar
