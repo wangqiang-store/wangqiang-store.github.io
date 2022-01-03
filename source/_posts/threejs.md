@@ -3,7 +3,7 @@ title: threejs
 date: 2021-12-29 13:44:58
 comments: true #是否可评论
 toc: true #是否显示文章目录
-top_img: /image/sub_two.jpg
+top_img: /image/sailing.jpg
 categories: #分类
   - vue #这是一级分类
 tags:

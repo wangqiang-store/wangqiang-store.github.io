@@ -1,6 +1,6 @@
 ---
 title: Wang Qiang blogs
-top_img: /image/sub_two.jpg
+top_img: /image/sailing.jpg
 top: true
 ---
 
