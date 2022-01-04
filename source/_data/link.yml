@@ -1,0 +1,51 @@
+- class_name: 友情链接
+  class_desc: 那些人，那些事
+  link_list:
+    - name: Hexo
+      link: https://hexo.io/zh-tw/
+      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+      descr: 快速、简单且强大的网站框架
+    - name: butterfly
+      link: https://butterfly.js.org/
+      avatar: https://d33wubrfki0l68.cloudfront.net/6657ba50e702d84afb32fe846bed54fba1a77add/827ae/logo.svg
+      descr: hexo butterfly themes
+
+- class_name: 资料网站
+  class_desc: 值得推荐的网站
+  link_list:
+    - name: Vue
+      link: https://v3.cn.vuejs.org/
+      avatar: https://s4.ax1x.com/2022/01/04/TqDH7q.png
+      descr: 渐进式JavaScript 框架
+    - name: Vuejs
+      link: https://vue-js.com/learn-vue/
+      avatar: https://s4.ax1x.com/2022/01/04/TqDH7q.png
+      descr: vue源码解析
+    - name: React
+      link: https://zh-hans.reactjs.org/
+      avatar: https://s4.ax1x.com/2022/01/04/TqDrXd.png
+      descr: 用于构建用户界面的 JavaScript 库
+    - name: Uniapp
+      link: https://uniapp.dcloud.io/
+      avatar: https://s4.ax1x.com/2022/01/04/TqBePO.png
+      descr: 多端开发框架
+    - name: WeChat
+      link: https://developers.weixin.qq.com/doc/
+      avatar: https://s4.ax1x.com/2022/01/04/TqyynJ.jpg
+      descr: 微信开发平台
+    - name: Vite
+      link: https://cn.vitejs.dev/
+      avatar: https://s4.ax1x.com/2022/01/04/TqURte.png
+      descr: 前端开发与构建工具
+
+- class_name: 工具网站
+  class_desc: 值得推荐的网站
+  link_list:
+    - name: cubic-bezier
+      link: https://cubic-bezier.com/#.29,.32,.64,.64
+      avatar: https://s4.ax1x.com/2022/01/04/Tqry2F.png
+      descr: 贝塞尔曲线
+    - name: imgtu
+      link: https://imgtu.com/
+      avatar: https://s4.ax1x.com/2022/01/04/TqrzPf.png
+      descr: 免费图床

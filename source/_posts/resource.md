@@ -1,7 +1,7 @@
 ---
 title: codebase
 date: 2021-12-31 9:25:58
-top_img: /image/sailing.jpg
+top_img: /img/sailing.jpg
 tags:
   - resource
 categories:
@@ -14,8 +14,6 @@ categories:
 
 - CSS 片段集合包含 CSS3 的实用程序和交互式示例
 - 包括用于创建常用布局、样式和动画元素的现代技术，以及用于处理用户交互的片段
-
-<!-- more -->
 
 [<center>animate.css<center>](https://animate.style/)
 
