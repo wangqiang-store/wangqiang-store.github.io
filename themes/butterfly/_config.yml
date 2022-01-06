@@ -588,7 +588,7 @@ beautify:
 font:
   global-font-size:
   code-font-size:
-  font-family: cursive
+  font-family:
   code-font-family: consolas, Menlo, "PingFang SC", "Microsoft JhengHei", "Microsoft YaHei", sans-serif
 
 # Font settings for the site title and site subtitle

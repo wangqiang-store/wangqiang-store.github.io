@@ -25,6 +25,10 @@
       link: https://zh-hans.reactjs.org/
       avatar: https://s4.ax1x.com/2022/01/04/TqDrXd.png
       descr: 用于构建用户界面的 JavaScript 库
+    - name: Umijs
+      link: https://umijs.org/zh-CN
+      avatar: https://s4.ax1x.com/2022/01/06/TxmZWt.png
+      descr: 插件化的企业级前端应用框架
     - name: Uniapp
       link: https://uniapp.dcloud.io/
       avatar: https://s4.ax1x.com/2022/01/04/TqBePO.png
@@ -49,3 +53,7 @@
       link: https://imgtu.com/
       avatar: https://s4.ax1x.com/2022/01/04/TqrzPf.png
       descr: 免费图床
+    - name: qiankun
+      link: https://qiankun.umijs.org/zh
+      avatar: https://s4.ax1x.com/2022/01/06/Txe5R0.png
+      descr: 微前端

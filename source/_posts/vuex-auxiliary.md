@@ -13,7 +13,7 @@ tags:
 
 > 自定义 hooks
 
-```javascript
+```js
 import { computed } from "vue";
 import {
   mapGetters,

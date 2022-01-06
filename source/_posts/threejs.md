@@ -13,7 +13,7 @@ tags:
 
 ### <center>vue 加载 3D 模型</center>
 
-```javascript
+```js
 $ npm install --save three
 ```
 
@@ -303,7 +303,7 @@ export default {
 
 #### 模型交互
 
-```javascript
+```js
 // 用户交互
 let selectObject = (event) => {
   event.preventDefault();
@@ -329,7 +329,7 @@ window.onpointerdown = selectObject;
 
 #### 场景销毁
 
-```javascript
+```js
 // 销毁
 const removeCube = () => {
   var allChildren = scene.children;

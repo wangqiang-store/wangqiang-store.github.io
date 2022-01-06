@@ -11,13 +11,13 @@ tags:
   - animejs
 ---
 
-```javascript
+```js
  npm install animejs
 ```
 
 > 在 main.js 中
 
-```javascript
+```js
 // 引入animejs
 import anime from "animejs";
 //注册全局方法
@@ -41,7 +41,7 @@ app.config.globalProperties.$anime = anime;
 
 > js
 
-```javascript
+```js
 // 初始化走马灯
 /*
 *  overdueCompanyList 元素列表

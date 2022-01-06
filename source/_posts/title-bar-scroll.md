@@ -5,35 +5,33 @@ comments: true
 toc: true
 top_img: /img/sailing.jpg
 categories:
-  - utils
+  - jsvascript
 tags:
-  - vue
+  - jsvascript
 ---
 
+**<center>vue 中实现侧边导航栏跟随对应的模块滚动<center>**
+
+> 子模块
+
 ```html
-<template>
-  <el-row>
-    <el-col :span="24">
-      <div class="box">
-        <ul class="list">
-          <li
-            v-for="(item, index) in navList"
-            :key="index"
-            @click="scrollTo(index)"
-            :class="{ active: active === index }"
-            class="text-ellipsis"
-            :title="item.title"
-          >
-            {{ item.title }}
-          </li>
-        </ul>
-      </div>
-    </el-col>
-  </el-row>
-</template>
+<div class="box">
+  <ul class="list">
+    <li
+      v-for="(item, index) in navList"
+      :key="index"
+      @click="scrollTo(index)"
+      :class="{ active: active === index }"
+      class="text-ellipsis"
+      :title="item.title"
+    >
+      {{ item.title }}
+    </li>
+  </ul>
+</div>
 ```
 
-```javascript
+```js
 <script lang="ts">
 import { defineComponent, onMounted, onUnmounted, reactive, toRefs } from "vue";
 export default defineComponent({
