@@ -77,6 +77,11 @@ categories:
 - 使用于 vue2
 - 使用 vue 组件的 slot 插槽进行模板加载。 使用 iframe 复制打印区域
 
+[<center>Driver.js<center>](https://github.com/kamranahmedse/driver.js)
+
+- 一个轻量级、无依赖的原生 JavaScript 引擎，可将用户的注意力集中在整个页面上
+- 制作引导页
+
 ### <center>**react**<center>
 
 ### <center>**UI**<center>

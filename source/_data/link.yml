@@ -41,6 +41,14 @@
       link: https://cn.vitejs.dev/
       avatar: https://s4.ax1x.com/2022/01/04/TqURte.png
       descr: 前端开发与构建工具
+    - name: pinia
+      link: https://pinia.vuejs.org/
+      avatar: https://s4.ax1x.com/2022/01/13/7Q2g3V.png
+      descr: 状态管理工具
+    - name: tailwindcss
+      link: https://www.tailwindcss.cn/
+      avatar: https://s4.ax1x.com/2022/01/13/7Q2im4.png
+      descr: Tailwind CSS 是一个功能类优先的 CSS 框架
 
 - class_name: 工具网站
   class_desc: 值得推荐的网站
