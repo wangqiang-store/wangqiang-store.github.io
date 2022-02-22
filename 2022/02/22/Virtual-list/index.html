@@ -1,0 +1,208 @@
+<!DOCTYPE html><html lang="en" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>前端渲染大量数据处理方式  虚拟列表 | 一个正在努力的程序员</title><meta name="keywords" content="vue"><meta name="author" content="Wang Qiang"><meta name="copyright" content="Wang Qiang"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="什么是虚拟列表虚拟列表 其实是按需显示的一种实现，即只对可见区域进行渲染，对非可见区域中的数据不渲染或部分渲染的技术，从而达到极高的渲染性能。 假设有 1 万条记录需要同时渲染，我们屏幕的可见区域的高度为 500px,而列表项的高度为 50px，则此时我们在屏幕中最多只能看到 10 个列表项，那么在首次渲染的时候，我们只需加载 10 条即可。 实现虚拟列表的实现，实际上就是在首屏加载的时候，只加载">
+<meta property="og:type" content="article">
+<meta property="og:title" content="前端渲染大量数据处理方式  虚拟列表">
+<meta property="og:url" content="https://wangqiangblogs.cn/2022/02/22/Virtual-list/index.html">
+<meta property="og:site_name" content="一个正在努力的程序员">
+<meta property="og:description" content="什么是虚拟列表虚拟列表 其实是按需显示的一种实现，即只对可见区域进行渲染，对非可见区域中的数据不渲染或部分渲染的技术，从而达到极高的渲染性能。 假设有 1 万条记录需要同时渲染，我们屏幕的可见区域的高度为 500px,而列表项的高度为 50px，则此时我们在屏幕中最多只能看到 10 个列表项，那么在首次渲染的时候，我们只需加载 10 条即可。 实现虚拟列表的实现，实际上就是在首屏加载的时候，只加载">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://wangqiangblogs.cn/img/sailing.jpg">
+<meta property="article:published_time" content="2022-02-22T08:48:58.000Z">
+<meta property="article:modified_time" content="2022-02-22T09:04:20.618Z">
+<meta property="article:author" content="Wang Qiang">
+<meta property="article:tag" content="vue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://wangqiangblogs.cn/img/sailing.jpg"><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://wangqiangblogs.cn/2022/02/22/Virtual-list/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"We didn't find any results for the search: ${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: 'Copy successfully',
+    error: 'Copy error',
+    noSupport: 'The browser does not support'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: 'Just',
+    min: 'minutes ago',
+    hour: 'hours ago',
+    day: 'days ago',
+    month: 'months ago'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js',
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+    },
+    fancybox: {
+      js: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '前端渲染大量数据处理方式  虚拟列表',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-02-22 17:04:20'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const fontSizeVal = saveToLocal.get('global-font-size')
+    if (fontSizeVal !== undefined) {
+      document.documentElement.style.setProperty('--global-font-size', fontSizeVal + 'px')
+    }
+    
+    const detectApple = () => {
+      if (GLOBAL_CONFIG_SITE.isHome && /iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/styles.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">Loading...</div></div></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data"><div class="data-item is-center"><div class="data-item-link"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a></div></div><div class="data-item is-center"><div class="data-item-link"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/sailing.jpg')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">一个正在努力的程序员</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> Search</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> Link</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> About</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">前端渲染大量数据处理方式  虚拟列表</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">Created</span><time class="post-meta-date-created" datetime="2022-02-22T08:48:58.000Z" title="Created 2022-02-22 16:48:58">2022-02-22</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">Updated</span><time class="post-meta-date-updated" datetime="2022-02-22T09:04:20.618Z" title="Updated 2022-02-22 17:04:20">2022-02-22</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/vue/">vue</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="前端渲染大量数据处理方式  虚拟列表"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">Post View:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h3 id="什么是虚拟列表"><a href="#什么是虚拟列表" class="headerlink" title="什么是虚拟列表"></a>什么是虚拟列表</h3><p><code>虚拟列表</code> 其实是按需显示的一种实现，即只对<code>可见区域</code>进行渲染，对<code>非可见区域</code>中的数据不渲染或<code>部分渲染</code>的技术，从而达到极高的渲染性能。</p>
+<p>假设有 1 万条记录需要同时渲染，我们屏幕的<code>可见区域</code>的高度为 <code>500px</code>,而列表项的高度为 <code>50px</code>，则此时我们在屏幕中最多只能看到 10 个列表项，那么在首次渲染的时候，我们只需加载 10 条即可。</p>
+<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>虚拟列表的实现，实际上就是在首屏加载的时候，只加载<code>可视区域</code>内需要的列表项，当滚动发生时，动态通过计算获得<code>可视区域</code>内的列表项，并将<code>非可视区域</code>内存在的列表项删除。</p>
+<ul>
+<li>计算当前可视区域起始数据索引(startIndex)</li>
+<li>计算当前可视区域结束数据索引(endIndex)</li>
+<li>计算当前可视区域的数据，并渲染到页面中</li>
+<li>计算 startIndex 对应的数据在整个列表中的偏移位置 startOffset 并设置到列表上</li>
+</ul>
+<p>由于只是对<code>可视区域</code>内的列表项进行渲染，所以为了保持列表容器的高度并可正常的触发滚动，将 Html 结构设计成如下结构：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;infinite-list-container&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;infinite-list-phantom&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;infinite-list&quot;</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- item-1 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- item-2 --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- ...... --&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- item-n --&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>infinite-list-container 为可视区域的容器</li>
+<li>infinite-list-phantom 为容器内的占位，高度为总列表高度，用于形成滚动条</li>
+<li>infinite-list 为列表项的渲染区域</li>
+</ul>
+<p>接着，监听 infinite-list-container 的 scroll 事件，获取滚动位置 scrollTop</p>
+<ul>
+<li>假定可视区域高度固定，称之为 <code>screenHeight</code></li>
+<li>假定列表每项高度固定，称之为 <code>itemSize</code></li>
+<li>假定列表数据称之为 <code>listData</code></li>
+<li>假定当前滚动位置称之为 <code>scrollTop</code></li>
+</ul>
+<p>则可推算出：</p>
+<ul>
+<li>列表总高度 <code>listHeight</code> = <code>listData</code>.length * <code>itemSize</code></li>
+<li>可显示的列表项数 <code>visibleCount</code> = Math.ceil(<code>screenHeight</code> / <code>itemSize</code>)</li>
+<li>数据的起始索引 <code>startIndex</code> = Math.floor(<code>scrollTop</code> / <code>itemSize</code>)</li>
+<li>数据的结束索引 <code>endIndex</code> = <code>startIndex</code> + <code>visibleCount</code></li>
+<li>列表显示数据为 <code>visibleData</code> = <code>listData</code>.slice(<code>startIndex</code>,<code>endIndex</code>)</li>
+</ul>
+<p>当滚动后，由于渲染区域相对于可视区域已经发生了偏移，此时我需要获取一个偏移量 startOffset，通过样式控制将渲染区域偏移至可视区域中。</p>
+<ul>
+<li>偏移量 <code>startOffset</code> = scrollTop - (scrollTop % <code>itemSize</code>);</li>
+</ul>
+<p>最终的简易代码如下：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">ref</span>=<span class="string">&quot;list&quot;</span> <span class="attr">class</span>=<span class="string">&quot;infinite-list-container&quot;</span> @<span class="attr">scroll</span>=<span class="string">&quot;scrollEvent($event)&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span></span></span><br><span class="line"><span class="tag">      <span class="attr">class</span>=<span class="string">&quot;infinite-list-phantom&quot;</span></span></span><br><span class="line"><span class="tag">      <span class="attr">:style</span>=<span class="string">&quot;&#123; height: listHeight + &#x27;px&#x27; &#125;&quot;</span></span></span><br><span class="line"><span class="tag">    &gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;infinite-list&quot;</span> <span class="attr">:style</span>=<span class="string">&quot;&#123; transform: getTransform &#125;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span></span></span><br><span class="line"><span class="tag">        <span class="attr">ref</span>=<span class="string">&quot;items&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">class</span>=<span class="string">&quot;infinite-list-item&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">v-for</span>=<span class="string">&quot;item in visibleData&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">:key</span>=<span class="string">&quot;item.id&quot;</span></span></span><br><span class="line"><span class="tag">        <span class="attr">:style</span>=<span class="string">&quot;&#123; height: itemSize + &#x27;px&#x27;, lineHeight: itemSize + &#x27;px&#x27; &#125;&quot;</span></span></span><br><span class="line"><span class="tag">      &gt;</span></span><br><span class="line">        &#123;&#123; item.value &#125;&#125;</span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&quot;VirtualList&quot;</span>,</span><br><span class="line">  <span class="attr">props</span>: &#123;</span><br><span class="line">    <span class="comment">//所有列表数据</span></span><br><span class="line">    <span class="attr">listData</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="built_in">Array</span>,</span><br><span class="line">      <span class="attr">default</span>: <span class="function">() =&gt;</span> [],</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//每项高度</span></span><br><span class="line">    <span class="attr">itemSize</span>: &#123;</span><br><span class="line">      <span class="attr">type</span>: <span class="built_in">Number</span>,</span><br><span class="line">      <span class="attr">default</span>: <span class="number">200</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">computed</span>: &#123;</span><br><span class="line">    <span class="comment">//列表总高度</span></span><br><span class="line">    <span class="function"><span class="title">listHeight</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">this</span>.listData.length * <span class="built_in">this</span>.itemSize;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//可显示的列表项数</span></span><br><span class="line">    <span class="function"><span class="title">visibleCount</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">Math</span>.ceil(<span class="built_in">this</span>.screenHeight / <span class="built_in">this</span>.itemSize);</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//偏移量对应的style</span></span><br><span class="line">    <span class="function"><span class="title">getTransform</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`translate3d(0,<span class="subst">$&#123;<span class="built_in">this</span>.startOffset&#125;</span>px,0)`</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="comment">//获取真实显示列表数据</span></span><br><span class="line">    <span class="function"><span class="title">visibleData</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="built_in">this</span>.listData.slice(</span><br><span class="line">        <span class="built_in">this</span>.start,</span><br><span class="line">        <span class="built_in">Math</span>.min(<span class="built_in">this</span>.end, <span class="built_in">this</span>.listData.length)</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">mounted</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.screenHeight = <span class="built_in">this</span>.$el.clientHeight;</span><br><span class="line">    <span class="built_in">this</span>.start = <span class="number">0</span>;</span><br><span class="line">    <span class="built_in">this</span>.end = <span class="built_in">this</span>.start + <span class="built_in">this</span>.visibleCount;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      <span class="comment">//可视区域高度</span></span><br><span class="line">      <span class="attr">screenHeight</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="comment">//偏移量</span></span><br><span class="line">      <span class="attr">startOffset</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="comment">//起始索引</span></span><br><span class="line">      <span class="attr">start</span>: <span class="number">0</span>,</span><br><span class="line">      <span class="comment">//结束索引</span></span><br><span class="line">      <span class="attr">end</span>: <span class="literal">null</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">methods</span>: &#123;</span><br><span class="line">    <span class="function"><span class="title">scrollEvent</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="comment">//当前滚动位置</span></span><br><span class="line">      <span class="keyword">let</span> scrollTop = <span class="built_in">this</span>.$refs.list.scrollTop;</span><br><span class="line">      <span class="comment">//此时的开始索引</span></span><br><span class="line">      <span class="built_in">this</span>.start = <span class="built_in">Math</span>.floor(scrollTop / <span class="built_in">this</span>.itemSize);</span><br><span class="line">      <span class="comment">//此时的结束索引</span></span><br><span class="line">      <span class="built_in">this</span>.end = <span class="built_in">this</span>.start + <span class="built_in">this</span>.visibleCount;</span><br><span class="line">      <span class="comment">//此时的偏移量</span></span><br><span class="line">      <span class="built_in">this</span>.startOffset = scrollTop - (scrollTop % <span class="built_in">this</span>.itemSize);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p><a target="_blank" rel="noopener" href="https://juejin.cn/post/6844903982742110216">原作者 https://juejin.cn/post/6844903982742110216</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">Author: </span><span class="post-copyright-info"><a href="mailto:undefined">Wang Qiang</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">Link: </span><span class="post-copyright-info"><a href="https://wangqiangblogs.cn/2022/02/22/Virtual-list/">https://wangqiangblogs.cn/2022/02/22/Virtual-list/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">Copyright Notice: </span><span class="post-copyright-info">All articles in this blog are licensed under <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> unless stating additionally.</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/vue/">vue</a></div><div class="post_share"><div class="social-share" data-image="/img/sailing.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/01/05/nginx-conf/"><img class="next-cover" src="/img/sailing.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">Next Post</div><div class="next_info">nginx配置</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>Related Articles</span></div><div class="relatedPosts-list"><div><a href="/2022/01/04/trotting-horse-lamp/" title="animejs实现走马灯效果"><img class="cover" src="/img/sailing.jpg" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-01-04</div><div class="title">animejs实现走马灯效果</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Wang Qiang</div><div class="author-info__description">选择有时候比努力更重要</div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">Articles</div><div class="length-num">9</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">Tags</div><div class="length-num">9</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">Categories</div><div class="length-num">5</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/wangqiang-store/wangqiang-store.github.io/tree/hexo"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>Announcement</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>Catalog</span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%99%9A%E6%8B%9F%E5%88%97%E8%A1%A8"><span class="toc-number">1.</span> <span class="toc-text">什么是虚拟列表</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%9E%E7%8E%B0"><span class="toc-number">2.</span> <span class="toc-text">实现</span></a></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>Recent Post</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/02/22/Virtual-list/" title="前端渲染大量数据处理方式  虚拟列表"><img src="/img/sailing.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="前端渲染大量数据处理方式  虚拟列表"/></a><div class="content"><a class="title" href="/2022/02/22/Virtual-list/" title="前端渲染大量数据处理方式  虚拟列表">前端渲染大量数据处理方式  虚拟列表</a><time datetime="2022-02-22T08:48:58.000Z" title="Created 2022-02-22 16:48:58">2022-02-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/05/nginx-conf/" title="nginx配置"><img src="/img/sailing.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="nginx配置"/></a><div class="content"><a class="title" href="/2022/01/05/nginx-conf/" title="nginx配置">nginx配置</a><time datetime="2022-01-05T08:58:45.000Z" title="Created 2022-01-05 16:58:45">2022-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/05/axios-cancelToken/" title="axios阻止重复请求"><img src="/img/sailing.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="axios阻止重复请求"/></a><div class="content"><a class="title" href="/2022/01/05/axios-cancelToken/" title="axios阻止重复请求">axios阻止重复请求</a><time datetime="2022-01-05T08:19:41.000Z" title="Created 2022-01-05 16:19:41">2022-01-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/04/title-bar-scroll/" title="标题栏滚动定位"><img src="/img/sailing.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="标题栏滚动定位"/></a><div class="content"><a class="title" href="/2022/01/04/title-bar-scroll/" title="标题栏滚动定位">标题栏滚动定位</a><time datetime="2022-01-04T08:58:22.000Z" title="Created 2022-01-04 16:58:22">2022-01-04</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/01/04/vuex-auxiliary/" title="vue3.0中使用vuex辅助函数"><img src="/img/sailing.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="vue3.0中使用vuex辅助函数"/></a><div class="content"><a class="title" href="/2022/01/04/vuex-auxiliary/" title="vue3.0中使用vuex辅助函数">vue3.0中使用vuex辅助函数</a><time datetime="2022-01-04T08:36:43.000Z" title="Created 2022-01-04 16:36:43">2022-01-04</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Wang Qiang</div><div class="framework-info"><span>Framework </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>Theme </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">Hi, welcome to my <a href="https://wangqiangblogs.cn/">blog</a>!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="Read Mode"><i class="fas fa-book-open"></i></button><button id="font-plus" type="button" title="Increase font size"><i class="fas fa-plus"></i></button><button id="font-minus" type="button" title="Decrease font size"><i class="fas fa-minus"></i></button><button id="darkmode" type="button" title="Switch Between Light And Dark Mode"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="Toggle between single-column and double-column"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="Setting"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="Table Of Contents"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="Back To Top"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><div class="search-dialog__title" id="local-search-title">Local search</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="Search for Posts" type="text"/></div></div></div><hr/><div id="local-search-results"></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',preloader.endLoading())</script><div class="js-pjax"></div><script id="canvas_nest" defer="defer" color="0,0,255" opacity="0.7" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/canvas-nest.min.js"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
